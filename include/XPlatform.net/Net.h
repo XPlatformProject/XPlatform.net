@@ -1,0 +1,6 @@
+#ifndef _XPLATFORM_NET_H
+#define _XPLATFORM_NET_H
+
+#define XPLATFORM_NET_EXT_NAME "XPLATFORM_EXT_NET"
+
+#endif
