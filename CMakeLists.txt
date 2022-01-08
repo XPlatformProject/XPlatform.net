@@ -8,7 +8,7 @@ add_library("XPlatform.net" SHARED
 "src/ext_main.cpp" "src/net.h"
 "include/XPlatform.net/IPEndPoint.h"
 "include/XPlatform.net/XP_ISocket.h"
-"src/Sockets/TCPSocket/TCPSocket.h" 
+"src/SSL/Sockets/TCPSocketv6/TCPSocketv6.h" 
 "src/Sockets/TCPSocket/TCPSocket.cpp"
 "src/Sockets/TCPSocketv6/TCPSocketv6.h"
 "src/Sockets/TCPSocketv6/TCPSocketv6.cpp"
@@ -16,7 +16,12 @@ add_library("XPlatform.net" SHARED
 "src/Sockets/UDPSocket/UDPSocket.h"
 "src/Sockets/UDPSocket/UDPSocket.cpp"
 "src/Sockets/UDPSocket6/UDPSocketv6.cpp"
-"src/Sockets/UDPSocket6/UDPSocket6.h" )
+"src/Sockets/UDPSocket6/UDPSocketv6.h"
+"include/XPlatform.net/SSL/SSL.h"
+"src/SSL/SSLCtx/SSLCtx.h" "src/SSL/SSLCtx/SSLCtx.cpp"
+"src/SSL/Sockets/TCPSocket/TCPSocket.h" "src/SSL/Sockets/TCPSocket/TCPSocket.cpp"
+"src/SSL/LLApi.cpp"
+"src/SSL/Sockets/TCPSocketv6/TCPSocketv6.cpp" "src/SSL/Sockets/TCPSocketv6/TCPSocketv6.h")
 
 add_library("XPlatform.net-headers" INTERFACE)
 target_include_directories("XPlatform.net-headers" INTERFACE "include/")

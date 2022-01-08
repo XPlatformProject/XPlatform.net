@@ -20,12 +20,14 @@
 #include <netdb.h>
 #endif
 
+#include<openssl/ssl.h>
+
 #include "Sockets/TCPSocket/TCPSocket.h"
 #include "Sockets/TCPSocketv6/TCPSocketv6.h"
 #include "Sockets/UDPSocket/UDPSocket.h"
 #include "Sockets/UDPSocket6/UDPSocketv6.h"
 
-static XPlatform::core::XPlatformExtensionInfo _NetExtInf{};
+XPlatform::core::XPlatformExtensionInfo _NetExtInf{};
 
 int _SO_REUSE_ADDR = 0;
 
@@ -60,6 +62,10 @@ XP_NET_API XPlatform::Api::XPResult xplatform_extension_init(){
 	}
 
 #endif
+
+	if(SSL_load_error_strings() == 0) return XPlatform::Api::XPResult::XPLATFORM_RESULT_FAILED;
+	if(SSL_library_init() == 0) return XPlatform::Api::XPResult::XPLATFORM_RESULT_FAILED;
+	if (OpenSSL_add_all_algorithms() == 0)return XPlatform::Api::XPResult::XPLATFORM_RESULT_FAILED;
 
 	return XPlatform::Api::XPResult::XPLATFORM_RESULT_SUCCESS;
 }
@@ -103,6 +109,13 @@ XP_NET_API void xplatform_ext_delete_class(uint32_t Id, void* ptr) {
 		assert(Id != Id && "required delete class id dont found!");
 		break;
 	}
+}
+
+XP_NET_API const std::string& xplatform_resolve_hostname_to_ip(const std::string& host) {
+	hostent* hostname = gethostbyname(host.c_str());
+	if (hostname)
+		return std::string(inet_ntoa(**(in_addr**)hostname->h_addr_list));
+	return {};
 }
 
 XP_NET_API void xplatform_extension_shutdown() {

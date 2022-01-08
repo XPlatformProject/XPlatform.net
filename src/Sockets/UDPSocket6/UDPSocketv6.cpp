@@ -2,29 +2,29 @@
 
 int XPlatform::Net::UDPSocketv6::addr_len = sizeof(sockaddr_in6);
 
-XPlatform::Api::XPResult XPlatform::Net::UDPSocketv6::Bind(const XPlatform::Net::g_IPEndPoint& IPEndPoint){
+XPlatform::Net::XPlatformNetResult XPlatform::Net::UDPSocketv6::Bind(const XPlatform::Net::g_IPEndPoint& IPEndPoint){
 	m_EndPoint = reinterpret_cast<const XPlatform::Net::IPEndPoint6&>(IPEndPoint);
 	m_addr = *m_EndPoint.GetAddr();
 
 	if (m_sock == NULL) {
 		m_sock = socket(AF_INET6, SOCK_DGRAM, IPPROTO::IPPROTO_UDP);
 		if (m_sock < 0) {
-			return XPlatform::Api::XPResult::XPLATFORM_RESULT_FAILED;
+			return XPlatform::Net::XPlatformNetResult::XPLATFORM_NET_RESULT_FAILED;
 		}
 	}
 
 	if (bind(m_sock, reinterpret_cast<const sockaddr*>(&m_addr), sizeof(m_addr)) < 0) {
-		return XPlatform::Api::XPResult::XPLATFORM_RESULT_FAILED;
+		return XPlatform::Net::XPlatformNetResult::XPLATFORM_NET_RESULT_FAILED;
 	}
 
-	return XPlatform::Api::XPResult::XPLATFORM_RESULT_SUCCESS;
+	return XPlatform::Net::XPlatformNetResult::XPLATFORM_NET_RESULT_SUCCESS;
 }
 
-XPlatform::Api::XPResult XPlatform::Net::UDPSocketv6::CreateSocket(){
+XPlatform::Net::XPlatformNetResult XPlatform::Net::UDPSocketv6::CreateSocket(){
 	m_sock = socket(AF_INET6, SOCK_DGRAM, IPPROTO::IPPROTO_UDP);
-	if (m_sock < 0) return XPlatform::Api::XPResult::XPLATFORM_RESULT_FAILED;
+	if (m_sock < 0) return XPlatform::Net::XPlatformNetResult::XPLATFORM_NET_RESULT_FAILED;
 
-	return XPlatform::Api::XPResult::XPLATFORM_RESULT_SUCCESS;
+	return XPlatform::Net::XPlatformNetResult::XPLATFORM_NET_RESULT_SUCCESS;
 }
 
 uint32_t XPlatform::Net::UDPSocketv6::SendTo(const char* buf, int len, const XPlatform::Net::g_IPEndPoint& IPEndPoint){
@@ -51,7 +51,7 @@ uint32_t XPlatform::Net::UDPSocketv6::RecvFrom(char* buf, int len, XPlatform::Ne
 	return bytes;
 }
 
-uint32_t XPlatform::Net::UDPSocketv6::Select(uint32_t msecs) {
+XPlatform::Net::XPlatformNetResult XPlatform::Net::UDPSocketv6::Select(uint32_t msecs) {
 	struct timeval tval;
 	struct timeval* tvalptr = nullptr;
 	fd_set rset;
@@ -69,12 +69,12 @@ uint32_t XPlatform::Net::UDPSocketv6::Select(uint32_t msecs) {
 	res = select(m_sock + 1, &rset, nullptr, nullptr, tvalptr);
 
 	if (res <= 0)
-		return res;
+		return  XPlatform::Net::XPlatformNetResult::XPLATFORM_NET_RESULT_SELECT_FAILED;
 
 	if (!FD_ISSET(m_sock, &rset))
-		return -1;
+		return XPlatform::Net::XPlatformNetResult::XPLATFORM_NET_RESULT_SELECT_FAILED;
 
-	return 1;
+	return XPlatform::Net::XPlatformNetResult::XPLATFORM_NET_RESULT_SELECT_SUCCESS;
 
 }
 

@@ -13,16 +13,16 @@ namespace XPlatform {
 			static int addr_len;
 
 		public:
-			XPlatform::Api::XPResult Bind
-			(const XPlatform::Net::g_IPEndPoint& IPEndPoint);
+			XPlatform::Net::XPlatformNetResult Bind
+			(const XPlatform::Net::g_IPEndPoint& IPEndPoint) override;
 
-			XPlatform::Api::XPResult CreateSocket();
+			XPlatform::Net::XPlatformNetResult CreateSocket() override;
 
 			uint32_t SendTo(
 				const char* buf,
 				int len,
 				const XPlatform::Net::g_IPEndPoint& IPEndPoint
-			);
+			) override;
 
 			uint32_t RecvFrom(
 				char* buf,
@@ -30,7 +30,7 @@ namespace XPlatform {
 				XPlatform::Net::g_IPEndPoint& IPEndPoint
 			);
 
-			uint32_t Select(uint32_t msecs);
+			XPlatform::Net::XPlatformNetResult Select(uint32_t msecs) override;
 
 			void Close();
 

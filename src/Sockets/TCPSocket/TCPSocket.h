@@ -6,35 +6,38 @@
 namespace XPlatform {
 	namespace Net {
 		class TCPSocket : public XPlatform::Net::XP_ISocket {
+		protected:
 			uint32_t m_sock;
 			XPlatform::Net::IPEndPoint m_EndPoint;
 			sockaddr_in m_addr;
 			
 			static int addr_len;
+			
+			TCPSocket(uint32_t sock, const XPlatform::Net::IPEndPoint& EndPoint);
+		private:
+
 		public:
 
 			TCPSocket();
 
-			TCPSocket(uint32_t sock, const XPlatform::Net::IPEndPoint& EndPoint);
-
-			XPlatform::Api::XPResult Listen
+			virtual XPlatform::Net::XPlatformNetResult Listen
 			(const XPlatform::Net::g_IPEndPoint& EndPoint) override;
 
-			XPlatform::Api::XPResult Connect
+			virtual XPlatform::Net::XPlatformNetResult Connect
 			(const XPlatform::Net::g_IPEndPoint& EndPoint) override;
 
-			void Close();
+			virtual void Close();
 
-			uint32_t Select(uint32_t msecs);
+			XPlatform::Net::XPlatformNetResult Select(uint32_t msecs);
 
-			XPlatform::Net::XP_ISocket* Accept();
+			virtual XPlatform::Net::XP_ISocket* Accept();
 
-			uint32_t Send(const char* Buf, int Len);
-			uint32_t Recv(char* Buf, int Len);
+			virtual uint32_t Send(const char* Buf, int Len);
+			virtual uint32_t Recv(char* Buf, int Len);
 
 			const XPlatform::Net::g_IPEndPoint& GetEndPoint() const;
 
-			void Release() override;
+			virtual void Release() override;
 
 			~TCPSocket();
 

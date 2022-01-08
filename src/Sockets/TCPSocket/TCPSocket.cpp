@@ -14,13 +14,13 @@ XPlatform::Net::TCPSocket::TCPSocket(uint32_t sock, const XPlatform::Net::IPEndP
 
 }
 
-XPlatform::Api::XPResult XPlatform::Net::TCPSocket::Listen(const XPlatform::Net::g_IPEndPoint& EndPoint){
+XPlatform::Net::XPlatformNetResult XPlatform::Net::TCPSocket::Listen(const XPlatform::Net::g_IPEndPoint& EndPoint){
 	m_EndPoint = reinterpret_cast<const XPlatform::Net::IPEndPoint&>(EndPoint);
 	m_addr = *m_EndPoint.GetAddr();
 
 	m_sock = socket(AF_INET, SOCK_STREAM, IPPROTO::IPPROTO_TCP);
 	if (m_sock < 0) {
-		return XPlatform::Api::XPResult::XPLATFORM_RESULT_FAILED;
+		return XPlatform::Net::XPlatformNetResult::XPLATFORM_NET_RESULT_FAILED;
 	}
 
 #ifdef WIN32
@@ -36,31 +36,31 @@ XPlatform::Api::XPResult XPlatform::Net::TCPSocket::Listen(const XPlatform::Net:
 #endif
 
 	if (bind(m_sock, reinterpret_cast<const sockaddr*>(&m_addr), sizeof(m_addr)) < 0) {
-		return XPlatform::Api::XPResult::XPLATFORM_RESULT_FAILED;
+		return XPlatform::Net::XPlatformNetResult::XPLATFORM_NET_RESULT_FAILED_TO_BIND_SOCKET_TO_ADDRESS;
 	}
 
 	if (listen(m_sock, SOMAXCONN) < 0) {
-		return XPlatform::Api::XPResult::XPLATFORM_RESULT_FAILED;
+		return XPlatform::Net::XPlatformNetResult::XPLATFORM_NET_RESULT_FAILED_TO_LISTEN_SOCKET;
 	}
 
-	return XPlatform::Api::XPResult::XPLATFORM_RESULT_SUCCESS;
+	return XPlatform::Net::XPlatformNetResult::XPLATFORM_NET_RESULT_SUCCESS;
 }
 
-XPlatform::Api::XPResult XPlatform::Net::TCPSocket::Connect
+XPlatform::Net::XPlatformNetResult XPlatform::Net::TCPSocket::Connect
 (const XPlatform::Net::g_IPEndPoint& EndPoint){
 	m_EndPoint = reinterpret_cast<const XPlatform::Net::IPEndPoint&>(EndPoint);
 	m_addr = *m_EndPoint.GetAddr();
 
 	m_sock = socket(AF_INET, SOCK_STREAM, IPPROTO::IPPROTO_TCP);
 	if (m_sock < 0) {
-		return XPlatform::Api::XPResult::XPLATFORM_RESULT_FAILED;
+		return XPlatform::Net::XPlatformNetResult::XPLATFORM_NET_RESULT_FAILED;
 	}
 	
 	if (connect(m_sock, (struct sockaddr*)&m_addr, sizeof(m_addr)) < 0) {
-		return XPlatform::Api::XPResult::XPLATFORM_RESULT_FAILED;
+		return XPlatform::Net::XPlatformNetResult::XPLATFORM_NET_RESULT_FAILED_TO_CONNECT_TO_ADDRESS;
 	}
 
-	return XPlatform::Api::XPResult::XPLATFORM_RESULT_SUCCESS;
+	return XPlatform::Net::XPlatformNetResult::XPLATFORM_NET_RESULT_SELECT_SUCCESS;
 }
 
 void XPlatform::Net::TCPSocket::Close(){
@@ -70,7 +70,7 @@ void XPlatform::Net::TCPSocket::Close(){
 	close(m_sock);
 }
 
-uint32_t XPlatform::Net::TCPSocket::Select(uint32_t msecs){
+XPlatform::Net::XPlatformNetResult XPlatform::Net::TCPSocket::Select(uint32_t msecs){
 	struct timeval tval;
 	struct timeval* tvalptr = nullptr;
 	fd_set rset;
@@ -88,12 +88,12 @@ uint32_t XPlatform::Net::TCPSocket::Select(uint32_t msecs){
 	res = select(m_sock + 1, &rset, nullptr, nullptr, tvalptr);
 
 	if (res <= 0)
-		return res;
+		return XPlatform::Net::XPlatformNetResult::XPLATFORM_NET_RESULT_FAILED;
 
 	if (!FD_ISSET(m_sock, &rset))
-		return -1;
+		return XPlatform::Net::XPlatformNetResult::XPLATFORM_NET_RESULT_SELECT_FAILED;
 
-	return 1;
+	return XPlatform::Net::XPlatformNetResult::XPLATFORM_NET_RESULT_SELECT_SUCCESS;
 
 }
 
