@@ -33,4 +33,9 @@ endif(win32)
 target_include_directories("XPlatform.net" PRIVATE "include/")
 target_link_libraries("XPlatform.net" PRIVATE ssl XPlatform.core XFmt)
 
-
+if(UNIX)
+  message("-- [xplatform]: Compiling with -fpic")
+  target_compile_options("XPlatform.net" PUBLIC -fpic)
+  target_compile_options(ssl PUBLIC -fpic)
+  target_compile_options(crypto PUBLIC -fpic)
+endif(UNIX)

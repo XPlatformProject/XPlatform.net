@@ -7,7 +7,7 @@ XPlatform::Net::XPlatformNetResult XPlatform::Net::UDPSocketv6::Bind(const XPlat
 	m_addr = *m_EndPoint.GetAddr();
 
 	if (m_sock == NULL) {
-		m_sock = socket(AF_INET6, SOCK_DGRAM, IPPROTO::IPPROTO_UDP);
+		m_sock = socket(AF_INET6, SOCK_DGRAM, IPPROTO_UDP);
 		if (m_sock < 0) {
 			return XPlatform::Net::XPlatformNetResult::XPLATFORM_NET_RESULT_FAILED;
 		}
@@ -21,7 +21,7 @@ XPlatform::Net::XPlatformNetResult XPlatform::Net::UDPSocketv6::Bind(const XPlat
 }
 
 XPlatform::Net::XPlatformNetResult XPlatform::Net::UDPSocketv6::CreateSocket(){
-	m_sock = socket(AF_INET6, SOCK_DGRAM, IPPROTO::IPPROTO_UDP);
+	m_sock = socket(AF_INET6, SOCK_DGRAM, IPPROTO_UDP);
 	if (m_sock < 0) return XPlatform::Net::XPlatformNetResult::XPLATFORM_NET_RESULT_FAILED;
 
 	return XPlatform::Net::XPlatformNetResult::XPLATFORM_NET_RESULT_SUCCESS;
@@ -31,7 +31,7 @@ uint32_t XPlatform::Net::UDPSocketv6::SendTo(const char* buf, int len, const XPl
 #ifdef WIN32
 	return sendto(m_sock,buf, len, NULL, reinterpret_cast<const sockaddr*>(reinterpret_cast<const XPlatform::Net::IPEndPoint&>(IPEndPoint).GetAddr()), sizeof(sockaddr_in));
 #else 
-	return sendto(m_sock, buf, len, NULL, reinterpret_cast<const sockaddr*>(reinterpret_cast<const XPlatform::Net::IPEndPoint&>(IPEndPoint).GetAddr()), reinterpret_cast<socklen_t>(sizeof(sockaddr_in)));
+	return sendto(m_sock, buf, len, NULL, reinterpret_cast<const sockaddr*>(reinterpret_cast<const XPlatform::Net::IPEndPoint&>(IPEndPoint).GetAddr()), sizeof(sockaddr_in));
 #endif
 }
 

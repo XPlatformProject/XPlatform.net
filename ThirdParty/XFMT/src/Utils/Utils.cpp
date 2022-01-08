@@ -1,6 +1,8 @@
 #include "Utils.h"
 
 #include <memory>
+#include <cstring>
+
 #ifdef _DEBUG
 #include <cassert>
 #endif

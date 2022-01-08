@@ -2,7 +2,8 @@
 #define _INC_XPLATFORM_IP_ENDPOINT_H
 
 
-#include<string>
+#include <cstring>
+#include <string>
 
 #if defined(WIN32)
 #define  _WINSOCK_DEPRECATED_NO_WARNINGS
@@ -127,7 +128,7 @@ namespace XPlatform {
 
 			inline IPEndPoint6(sockaddr_in6& addr) : addr(addr), Port(htons(addr.sin6_port)) {
 				char TmpStr[INET6_ADDRSTRLEN];
-				memset(TmpStr, 0, INET6_ADDRSTRLEN);
+                std::memset(TmpStr, 0, INET6_ADDRSTRLEN);
 				inet_ntop(AF_INET6, (const void*)&addr.sin6_addr, TmpStr, INET6_ADDRSTRLEN);
 
 				IP = TmpStr;
@@ -135,7 +136,7 @@ namespace XPlatform {
 
 			inline IPEndPoint6(sockaddr_in6* addr) : addr(*addr), Port(htons(addr->sin6_port)) {
 				char TmpStr[INET6_ADDRSTRLEN];
-				memset(TmpStr, 0, INET6_ADDRSTRLEN);
+                std::memset(TmpStr, 0, INET6_ADDRSTRLEN);
 				inet_ntop(AF_INET6, (const void*)&addr->sin6_addr, TmpStr, INET6_ADDRSTRLEN);
 
 				IP = TmpStr;

@@ -24,7 +24,7 @@ XPlatform::Net::XP_ISocket* XPlatform::Net::SSL::TCPSocketv6::Accept() {
 #else
 	tmp_sock = accept(m_sock,
 		reinterpret_cast<struct sockaddr*>(&m_addr),
-		reinterpret_cast<socklen_t*>(&XPlatform::Net::TCPSocket::addr_len));
+		reinterpret_cast<socklen_t*>(&XPlatform::Net::TCPSocketv6::addr_len));
 #endif
 
 	if (tmp_sock < 0) return NULL;
@@ -57,7 +57,7 @@ XPlatform::Net::XPlatformNetResult XPlatform::Net::SSL::TCPSocketv6::Connect
 	m_EndPoint = reinterpret_cast<const XPlatform::Net::IPEndPoint6&>(EndPoint);
 	m_addr = *m_EndPoint.GetAddr();
 
-	m_sock = socket(AF_INET, SOCK_STREAM, IPPROTO::IPPROTO_TCP);
+	m_sock = socket(AF_INET, SOCK_STREAM, IPPROTO_TCP);
 	if (m_sock < 0) {
 		return XPlatform::Net::XPlatformNetResult::XPLATFORM_NET_RESULT_FAILED;
 	}
