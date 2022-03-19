@@ -1,3 +1,6 @@
 [submodule "ThirdParty/openssl"]
 	path = ThirdParty/openssl
 	url = https://github.com/XPlatformProject/openssl-cmake.git
+[submodule "ThirdParty/XMFT"]
+	path = ThirdParty/XMFT
+	url = https://github.com/XPlatformProject/XFmt.git
