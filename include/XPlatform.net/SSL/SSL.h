@@ -2,6 +2,7 @@
 #define _INC_XPLATFORM_SSL_H
 
 #include <XPlatform.net/SSL/SSLCtx.h>
+#include <XPlatform.net/XP_ISocket.h>
 
 namespace XPlatform {
 	namespace Net {
