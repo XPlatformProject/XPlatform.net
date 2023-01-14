@@ -4,4 +4,3 @@ project("ThirdParty")
 
 set(WITH_APPS OFF)
 add_subdirectory(openssl)
-add_subdirectory(XFMT)
