@@ -11,7 +11,7 @@
 
 ### XPlatform.net is an open source, multi-platform library of the XPlatform engine, for working with network.
 
-Warning: you need to add [![XFMT](https://github.com/XPlatformProject/openssl-cmake)] into your cmake project!
+Warning: you need to add [![XFMT](https://github.com/XPlatformProject/XFmt)] into your cmake project!
 
 ## ThirdParty:
 - [![openssl](https://img.shields.io/badge/ssl-openssl-Red?style=for-the-badge)](https://github.com/XPlatformProject/openssl-cmake)
